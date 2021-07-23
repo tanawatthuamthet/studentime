@@ -41,7 +41,7 @@
 		}
 		table{
 			box-shadow: 0px 0px 30px 0px #DDD;
-			border:5px solid #000;
+			/*border:5px solid #000;*/
 		}
 		th{
 			border:0px solid #000;
@@ -125,7 +125,7 @@
 							
 						</div>
 						<div class="col-8">
-							<table class="table table-bordered table-dark "  id="exportXlsx" height="100px" style="overflow-y: scroll;" border="0">
+							<table class="table table-striped "  id="exportXlsx" height="100px" style="overflow-y: scroll;" border="0">
   								<thead>
     								<tr>
       									<th scope="col">เลข RFID</th>
@@ -156,7 +156,7 @@
 						<i class="fa fa-user-plus"></i> เพิ่มรายชื่อ
 					</button>
 					<br>
-					<table class="table table-bordered table-dark">
+					<table class="table table-striped ">
   						<thead>
     						<tr>
       							<th scope="col">เลข RFID</th>
@@ -183,6 +183,7 @@
 						
 					</div>
     				<div class="col-4" width="300px" height="400px" style="float: right;">
+    					<br>
     					<form runat="server" width="300px" height="400px" style="overflow:hidden;">
   							<input accept="image/*" type='file' id="imgInp" style="position: absolute;z-index: 99;width: 100%;height: 600px;opacity: 0;" />
 
@@ -190,10 +191,11 @@
 						</form>
     				</div>
     				<div class="col-4">
-						<div class="card" style="width: 300px;border-radius: 20px;">
+    					<br>
+						<div class="card" style="width: 300px;border-radius: 20px;border:0px solid transparent;box-shadow: 0px 0px 10px 0px #DDD;">
   							<div class="card-body">
     							<form>
-    								<select id="c-create" class="form-control" style="margin-bottom: 20px;">
+    								<select id="c-create" class="form-control" style="margin-bottom: 20px;border:0px solid transparent;box-shadow: 0px 0px 10px 0px #DDD;">
   										<option>นาย</option>
   										<option>นางสาว</option>
   										<option>นาง</option>
@@ -201,16 +203,16 @@
   										<option>เด็กหญิง</option>
 									</select>
 									<div class="form-group">
-						    			<input type="text" class="form-control" id="name-create" placeholder="ชื่อ">
+						    			<input type="text" class="form-control" id="name-create" placeholder="ชื่อ" style="border:0px solid transparent;box-shadow: 0px 0px 10px 0px #DDD;">
 						  			</div>
 						  			<div class="form-group">
-						    			<input type="text" class="form-control" id="lastname-create" placeholder="นามสกุล">
+						    			<input type="text" class="form-control" id="lastname-create" placeholder="นามสกุล" style="border:0px solid transparent;box-shadow: 0px 0px 10px 0px #DDD;">
 						  			</div>
 						  			<div class="form-group">
-						    			<input type="number" class="form-control" id="id-create" placeholder="เลข RFID">
+						    			<input type="number" class="form-control" id="id-create" placeholder="เลข RFID" style="border:0px solid transparent;box-shadow: 0px 0px 10px 0px #DDD;">
 						  			</div>
 						  			<div class="form-group">
-						    			<input type="number" class="form-control" id="number-create" placeholder="เลขที่">
+						    			<input type="number" class="form-control" id="number-create" placeholder="เลขที่" style="border:0px solid transparent;box-shadow: 0px 0px 10px 0px #DDD;">
 						  			</div>
   									<button  class="btn btn-primary btn-block" onclick="saveData()">
   										ตกลง
@@ -442,7 +444,7 @@ function loadMember(){
       	</td>
       	<td>
       	<center>
-      		<button onclick="deleteData(${item['เลขประจำตัว']})" class="btn btn-link" style="color:#fff;text-decoration:none;">
+      		<button onclick="deleteData(${item['เลขประจำตัว']})" class="btn btn-danger" style="color:#fff;text-decoration:none;">
       		
       		<i class="fa fa-close"></i>  ลบ
       		</button>
