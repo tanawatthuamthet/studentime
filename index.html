@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-analytics.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
+  	<script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-database.js"></script>
+  	<script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-storage.js"></script>
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  	<script src="jquery.table2excel.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<style type="text/css">
+		::-webkit-scrollbar{
+			width:0px;
+		}
+		body{
+			font-family: 'Kanit', sans-serif;
+			background-color: #FFF5FD;
+		}
+		td, th{
+			font-family: 'Kanit', sans-serif;
+		}
+		.login_google{
+			background-image: url('sign-in-with-google.png');
+			background-size: cover;
+			border:0px solid transparent;
+			background-color: transparent;
+			outline: none;
+			user-select: none;
+			width: 250px;
+			height: 55px;
+			transition:all 0.5s ease;
+		}
+		.login_google:hover{
+			opacity: 0.8;
+		}
+		table{
+			box-shadow: 0px 0px 30px 0px #DDD;
+			border:5px solid #000;
+		}
+		th{
+			border:0px solid #000;
+		}
+		td{
+			border:0px solid #000;
+		}
+	</style>
+</head>
+<body>
+	<nav class="nav sh-nav" style="background-color: #005A8D;">
+  		<a class="nav-link active" href="#" style="color:#fff;font-weight: bold;font-family: 'Kanit', sans-serif;">
+  			Student Time
+  		</a>
+  		<a class="nav-link" href="#" onclick="openPage(1)" style="color:#fff;font-family: 'Kanit', sans-serif;">
+  			<i class="fa fa-id-card"></i> เช็คชื่อ
+  		</a>
+  		<a class="nav-link" href="#" onclick="openPage(2)" style="color:#fff;font-family: 'Kanit', sans-serif;"><i class="fa fa-user-circle">
+  			</i> รายชื่อนักเรียน
+  		</a>	
+  		<a class="nav-link disabled" href="#" style="font-family: 'Kanit', sans-serif;">
+  			<i class="fa fa-book"></i> เพิ่มเนื้อหา
+  		</a>
+  		<a class="nav-link" href="#" onclick="logout()" style="color:#fff;font-family: 'Kanit', sans-serif;">
+  			<i class="fa fa-sign-out"></i> ออกจากระบบ
+  		</a>
+	</nav>
+	<div class="container">
+			<div id="login_form">
+				<center>
+					<div style="padding: 20px;border-radius: 20px;box-shadow: 0px 0px 20px 0px #DDDDDD;width:300px;">
+						<h3>Student Time</h3>
+						<hr>
+						<p>
+							กรุณาเข้าสู่ระบบด้วย
+						</p>
+						<button class="login_google" onclick="login()" style="outline: none;">	
+						</button>
+					</div>
+				</center>
+			</div>
+			<div id="page1">
+
+				<div id="tabb_1">
+					
+				<div id="add_lession" style="display: none;margin-bottom: 40px;">
+					<button type="button" class="btn btn-light" style="font-family: 'Kanit', sans-serif;">สร้าง</button>
+				</div>
+				<h1 style="font-family: 'Kanit', sans-serif;">บทเรียน</h1>
+				<hr>
+				<br>
+				<div id="subject">
+				
+				</div>
+				</div>
+				<div id="tabb_2">
+					<button onclick="opentabB(1)" class="btn btn-link" style="font-family: 'Kanit', sans-serif;color:#000;text-decoration: none;"><i class="fa fa-reply "></i>&nbsp;กลับ</button>
+					<br>
+					<br>
+					<div class="row">
+						<div class="col-4">
+							<div class="card" style="box-shadow: #DDD;border-radius:25px;">
+
+  								<div class="card-body">
+  									<a style="color:#DDD;">เวลา </a><a id="show_time" style="color:#DDD;">0:0</a><br><br>
+  									<center>
+
+    								<img src="none.png" id="show_img" width="150px" height="200px">
+    								<hr>
+									<h3 id="show_name">ชื่อ นามสกุล</h3>
+									<p id="show_sub">เลข</p>
+									<input type="" name="" id="search" style="border:0px solid transparent;box-shadow: 0px 0px 10px 0px #DDD;
+										padding: 10px 25px;
+									"><br>
+									<br>	
+									<button onclick="resetCheck()" class="btn btn-dark btn-sm"><i class="fa fa-refresh"></i> reset</button>
+									<button onclick="downloadXLSX()" class="btn btn-primary btn-sm"><i class="fa fa-cloud-download"></i> load</button>
+									</center>
+  								</div>
+							</div>
+							
+						</div>
+						<div class="col-8">
+							<table class="table table-bordered table-dark "  id="exportXlsx" height="100px" style="overflow-y: scroll;" border="0">
+  								<thead>
+    								<tr>
+      									<th scope="col">เลข RFID</th>
+      									<th scope="col">เลขที่</th>
+      									<th scope="col">คำนำหน้า</th>
+      									<th scope="col">ชื่อ</th>
+      									<th scope="col">นามสกุล</th>
+      									<th scope="col">วัน</th>
+      									<th scope="col">เวลา</th>
+    								</tr>
+  								</thead>
+  								<tbody id="memberFind">
+    
+  								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="page2">
+				<div id="taba_1" style="display: none;">
+					<button onclick="opentab(2)" class="btn btn-light" style="background-color: transparent;
+						border:0px solid transparent;
+						font-family: 'Kanit', sans-serif;
+						float: right;
+						margin-bottom: 10px;
+					">
+						<i class="fa fa-user-plus"></i> เพิ่มรายชื่อ
+					</button>
+					<br>
+					<table class="table table-bordered table-dark">
+  						<thead>
+    						<tr>
+      							<th scope="col">เลข RFID</th>
+      							<th scope="col">เลขที่</th>
+      							<th scope="col">คำนำหน้า</th>
+      							<th scope="col">ชื่อ</th>
+      							<th scope="col">นามสกุล</th>
+      							<th scope="col" colspan="2">
+      								<center>
+      									จัดการ
+  	  								</center>
+  	  							</th>
+    						</tr>
+  						</thead>
+  						<tbody id="member">
+    
+  						</tbody>
+					</table>
+				</div>
+
+				<div class="row" id="taba_2">
+					
+					<div class="col-2">
+						
+					</div>
+    				<div class="col-4" width="300px" height="400px" style="float: right;">
+    					<form runat="server" width="300px" height="400px" style="overflow:hidden;">
+  							<input accept="image/*" type='file' id="imgInp" style="position: absolute;z-index: 99;width: 100%;height: 600px;opacity: 0;" />
+
+  							<img id="blah" src="none1.png" alt="ภาพได้รับความเสียหาย" width="300px" height="400px"  />
+						</form>
+    				</div>
+    				<div class="col-4">
+						<div class="card" style="width: 300px;border-radius: 20px;">
+  							<div class="card-body">
+    							<form>
+    								<select id="c-create" class="form-control" style="margin-bottom: 20px;">
+  										<option>นาย</option>
+  										<option>นางสาว</option>
+  										<option>นาง</option>
+  										<option>เด็กชาย</option>
+  										<option>เด็กหญิง</option>
+									</select>
+									<div class="form-group">
+						    			<input type="text" class="form-control" id="name-create" placeholder="ชื่อ">
+						  			</div>
+						  			<div class="form-group">
+						    			<input type="text" class="form-control" id="lastname-create" placeholder="นามสกุล">
+						  			</div>
+						  			<div class="form-group">
+						    			<input type="number" class="form-control" id="id-create" placeholder="เลข RFID">
+						  			</div>
+						  			<div class="form-group">
+						    			<input type="number" class="form-control" id="number-create" placeholder="เลขที่">
+						  			</div>
+  									<button  class="btn btn-primary btn-block" onclick="saveData()">
+  										ตกลง
+  									</button>
+  									<center>
+  										<button onclick="opentab(1)" class="btn btn-link " style="font-family: 'Kanit', sans-serif;">
+  											&nbsp;กลับ
+  										</button>
+  									</center>
+								</form>
+  							</div>
+						</div>
+					</div>
+					<div class="col-2">
+						
+					</div>
+				</div>
+			</div>
+			<div id="page3">
+
+			</div>
+		
+	</div>
+
+	<script type="text/javascript">
+		var firebaseConfig = {
+    	apiKey: "AIzaSyDdqSdAGW3HqmKD3jRpIBke9hWG2tEz84s",
+    	authDomain: "student-time-1dbfd.firebaseapp.com",
+    	databaseURL: "https://student-time-1dbfd-default-rtdb.asia-southeast1.firebasedatabase.app",
+    	projectId: "student-time-1dbfd",
+    	storageBucket: "student-time-1dbfd.appspot.com",
+    	messagingSenderId: "208628338141",
+    	appId: "1:208628338141:web:b8d54d64f70b0b983d3a34",
+    	measurementId: "G-BBKKYCDLYQ"
+  	};
+  
+  	firebase.initializeApp(firebaseConfig);
+  	firebase.analytics();
+	var provider = new firebase.auth.GoogleAuthProvider();
+	var database = new firebase.database()
+
+var blah = document.getElementById("blah")
+openPage(4)
+opentabB(1)
+opentab(1)
+var history_check = [] 
+var imgInp = document.getElementById("imgInp")
+
+setInterval(function(){
+	$("#show_time").text(new Date().toLocaleString().split(' ')[1])
+},1000)
+imgInp.onchange = evt => {
+  const [file] = imgInp.files
+  console.log(imgInp.files)
+  if (file) {
+    blah.src = URL.createObjectURL(file)
+  }
+}
+document.getElementById("search").addEventListener('keydown',(e)=>{
+	if(e["key"]=="Enter" && !history_check.includes($("#search").val()) && $("#search").val() != ""){
+		ref = firebase.database().ref("user/"+temp_json["userToken"].split(",")[1]+"/lession/student/"+$("#search").val())
+		ref.once("value",(snapshot)=>{
+			$("#memberFind").append(`
+		<tr>
+      	<th scope="row">${snapshot.val()['เลขประจำตัว']}</th>
+      	<td>${snapshot.val()['เลขที่']}</td>
+      	<td>${snapshot.val()['คำนำหน้า']}</td>
+      	<td>${snapshot.val()['ชื่อ']}</td>
+      	<td>${snapshot.val()['นามสกุล']}</td>
+      	<td>${new Date().toLocaleString().split(' ')[0]}</td>
+      	<td>${new Date().toLocaleString().split(' ')[1]}</td>
+    	</tr>
+    		`)
+			console.log(snapshot.val()['ภาพ'])
+			$("#show_img").attr("src",snapshot.val()['ภาพ'])
+			$("#show_name").text(snapshot.val()['คำนำหน้า']+snapshot.val()['ชื่อ']+" "+snapshot.val()['นามสกุล'])
+			$("#show_sub").text("เข้าเรียนเวลา "+new Date().toLocaleString().split(' ')[1])
+			history_check.push($("#search").val())
+		})
+		$("#search").val("")
+	}else if(e["key"]=="Enter"){
+		console.log('fail')
+		$("#search").val("")
+	}
+})
+
+function downloadXLSX(){
+	$("#exportXlsx").table2excel({
+				exclude: ".noExl",
+				name: "Excel Document Name",
+				filename: "SummaryReport",
+				fileext: ".xls",
+			});
+		
+}
+function opentab(number){
+	for(let i=0;i<3;i++){
+			$("#taba_"+(i+1)).hide()
+		}
+		if(number == 2){
+			$("#name-create").val("")
+			$("#blah").attr("src","none1.png")
+	$("#lastname-create").val("")
+	$("#id-create").val("")
+	$("#number-create").val("")
+			$("#id-create").prop( "disabled", false )
+		}
+		if(number == 4){
+			$("#taba_2").show()
+		}
+		if(number<3){
+			$("#taba_"+number).show()
+		}
+}
+
+function opentabB(number){
+	for(let i=0;i<3;i++){
+			$("#tabb_"+(i+1)).hide()
+		}
+		
+		if(number<3){
+			$("#tabb_"+number).show()
+		}
+}
+var image_firebase = ""
+function uplodaImage(c_name,text_name,text_lastname,text_id,text_number){
+	var storageRef = firebase.storage().ref();
+
+// Create a reference to 'mountains.jpg'
+var mountainsRef = storageRef.child(text_id+'.jpg');
+const [file] = imgInp.files
+if(file!=undefined){
+var t=mountainsRef.put(file).then((snapshot) => {
+  mountainsRef.getDownloadURL().then(function(url) {
+  console.log(url)
+  image_firebase = url
+  ref = firebase.database().ref("user/"+temp_json["userToken"].split(",")[1]+"/lession/student")
+  ref.child(text_id).child("คำนำหน้า").set(c_name)
+  ref.child(text_id).child("ชื่อ").set(text_name)
+  ref.child(text_id).child("นามสกุล").set(text_lastname)
+  ref.child(text_id).child("ภาพ").set(image_firebase)
+  ref.child(text_id).child("เลขประจำตัว").set(text_id)
+  ref.child(text_id).child("เลขที่").set(text_number)
+  console.log("successful f")
+  opentab(1)
+  image_firebase = ""
+  $("#imgInp").val("")
+  $("#blah").attr("src","none.png")
+  
+}).catch(function(error) {
+  // Handle any errors
+});
+});
+}else if(image_firebase != ""){
+var t=mountainsRef.put(file).then((snapshot) => {
+  mountainsRef.getDownloadURL().then(function(url) {
+  console.log(url)
+  ref = firebase.database().ref("user/"+temp_json["userToken"].split(",")[1]+"/lession/student")
+  ref.child(text_id).child("คำนำหน้า").set(c_name)
+  ref.child(text_id).child("ชื่อ").set(text_name)
+  ref.child(text_id).child("นามสกุล").set(text_lastname)
+  ref.child(text_id).child("ภาพ").set(image_firebase)
+  ref.child(text_id).child("เลขประจำตัว").set(text_id)
+  ref.child(text_id).child("เลขที่").set(text_number)
+  console.log("successful s")
+  image_firebase = ""
+  opentab(1)
+
+}).catch(function(error) {
+  // Handle any errors
+});
+});
+$("#name-create").val("")
+	$("#lastname-create").val("")
+	$("#id-create").val("")
+	$("#number-create").val("")
+}else{
+
+}
+}
+
+function resetCheck(){
+	history_check = []
+	$("#memberFind").empty()
+	$("#show_img").attr("src","none.png")
+	$("#show_name").text("ชื่อ นามสกุล")
+	$("#show_sub").text("เลข")
+}
+function edit(number){
+	ref = firebase.database().ref("user/"+temp_json["userToken"].split(",")[1]+"/lession/student/"+number)
+	ref.on("value",(snapshot)=>{
+		console.log(snapshot.val())
+		image_firebase = snapshot.val()["ภาพ"]
+		$("#name-create").val(snapshot.val()["ชื่อ"])
+		$("#lastname-create").val(snapshot.val()["นามสกุล"])
+		$("#id-create").val(snapshot.val()["เลขประจำตัว"])
+		$("#id-create").prop( "disabled", true )
+		$("#number-create").val(snapshot.val()["เลขที่"])
+		$("#blah").attr("src",image_firebase)
+		console.log("successful")
+		opentab(4)
+	})
+}
+
+function  deleteData(number){
+	ref = firebase.database().ref("user/"+temp_json["userToken"].split(",")[1]+"/lession/student")
+	ref.child(number).remove()
+	console.log("successful")
+}
+function loadMember(){
+	ref = firebase.database().ref("user/"+temp_json["userToken"].split(",")[1]+"/lession/student")
+	ref.on("value",(snapshot)=>{
+		$("#member").empty()
+		Object.values(snapshot.val()).forEach((item)=>{
+			console.log(item)
+			$("#member").append(`
+		<tr>
+      	<th scope="row">${item['เลขประจำตัว']}</th>
+      	<td style="font-family: 'Kanit', sans-serif;">${item['เลขที่']}</td>
+      	<td>${item['คำนำหน้า']}</td>
+      	<td>${item['ชื่อ']}</td>
+      	<td>${item['นามสกุล']}</td>
+      	<td>
+      	<center>
+      		<button onclick="edit(${item['เลขประจำตัว']})" class="btn btn-dark">
+      		<i class="fa fa-cogs"></i> แก้ไข
+      		</button>
+      	</center>
+      	</td>
+      	<td>
+      	<center>
+      		<button onclick="deleteData(${item['เลขประจำตัว']})" class="btn btn-link" style="color:#fff;text-decoration:none;">
+      		
+      		<i class="fa fa-close"></i>  ลบ
+      		</button>
+      	</center>
+      	</td>
+    	</tr>
+    		`)
+		})
+	})
+	
+}
+function saveData(){
+	let text_name = $("#name-create").val()
+	let text_lastname = $("#lastname-create").val()
+	let text_id = $("#id-create").val()
+	let text_number = $("#number-create").val()
+	let text_c = $("#c-create").val()
+	uplodaImage(text_c,text_name,text_lastname,text_id,text_number)
+	
+	
+	
+}
+	function openPage(number){
+		for(let i=0;i<3;i++){
+			$("#page"+(i+1)).hide()
+		}
+		if(number<4){
+			$("#page"+number).show()
+		}
+	}
+
+
+
+
+
+	
+	
+	var temp_json = {}
+	function loadCookie(){
+		var list_cookie = document.cookie.split(";")
+		list_cookie.forEach((value)=>{
+			temp_json[value.split('=')[0]] = value.split('=')[1]
+		})
+		if(temp_json["userToken"] != "" && temp_json["userToken"] != undefined){
+			$("#login_form").css("display","none")
+			$("#page1").css("display","block")
+			$(".sh-nav").css("animation-name","popup")
+			$(".sh-nav").css("animation-duration","3s")
+			setTimeout(function(){
+				$(".sh-nav").css("top","0px")
+			},3000)
+			console.log(temp_json["userToken"])
+			let count_lession = 0
+			ref = firebase.database().ref("user/"+temp_json["userToken"].split(",")[1]+"/lession/lession/")
+			ref.once("value",(snapshot)=>{
+				count_lession = (snapshot.val())
+			})
+			ref = firebase.database().ref("user/"+temp_json["userToken"].split(",")[1]+"/lession/subject")
+			ref.once("value",(snapshot)=>{
+				if(Object.keys(snapshot.val()).length < count_lession ){
+					//$("#add_lession").css("display","block")
+				}else{
+					$("#add_lession").css("display","none")
+				}
+				Object.keys(snapshot.val()).forEach((item)=>{
+					$("#subject").append(`
+						<div class="card box-sh" style="width: 18rem;margin-bottom:30px;border-radius:10px;">
+  							<img class="card-img-top" src="${Object.values(snapshot.val())[0]["image"]}" alt="Card image cap" style="border-radius:10px 10px 0px 0px;">
+  							<div class="card-body">
+    							<h5 class="card-title" style="float:left;display:block;font-family: 'Kanit', sans-serif;">${Object.values(snapshot.val())[0]["name"]}</h5>
+    							<br>
+    							<hr>
+    							<p class="card-text" style="float:left;display:block;font-family: 'Kanit', sans-serif;">${Object.values(snapshot.val())[0]["about"]}</p>
+
+  							</div>
+  							<a href="#" class="btn btn-success" onclick="opentabB(2)" style="font-family: 'Kanit', sans-serif;float:right;border-radius:10px;background-color:#005A8D;">เลือก</a>
+						</div>
+						
+						
+						`)
+				})
+
+			})
+			loadMember()
+		}else{
+			$("#login_form").css("display","block")
+			$("#page1").css("display","none")
+		}
+		console.log(temp_json)
+	}
+	function login(){
+		firebase.auth().signInWithPopup(provider).then((result) => {
+  			console.log(result)
+  			document.cookie='userToken='+
+  			result['additionalUserInfo']['profile']['email']+","+
+  			result['additionalUserInfo']['profile']['name']+","+
+  			result['additionalUserInfo']['profile']['picture']+';'
+  			loadCookie()
+  			ref = firebase.database().ref("user/"+result['additionalUserInfo']['profile']['name'])
+  			ref.once("value",(snapshot)=>{
+  				if(snapshot.val()==null){
+  					ref.child("lession").child("status").set(new Date().valueOf())
+  				}
+  				console.log(snapshot.val())
+  			})
+  		}).catch(function(err){
+  			console.log(err)
+  		})
+  	}
+
+  	function logout(){
+  		document.cookie='userToken=;'
+		firebase.auth().signOut()
+		$(".sh-nav").css("animation-name","reversepopup")
+		$(".sh-nav").css("animation-duration","3s")
+		setTimeout(function(){
+			$(".sh-nav").css("top","-100px")
+			$("#login_form").css("display","block")
+			openPage(4)
+		},3000)
+  	}
+  	loadCookie()
+	</script>
+</body>
+</html>

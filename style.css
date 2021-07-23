@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@500&display=swap');
+
+
+body{
+	font-family: 'Kanit', sans-serif;
+	background-color: #FFF5FD;
+}
+
+::-webkit-scrollbar{
+	width:0px;
+}
+@keyframes popup{
+	0%{top:-100px;}
+	100%{top:0px;}
+}
+
+@keyframes reversepopup{
+	0%{top:0px;}
+	100%{top:-100px;}
+	
+}
+#exportXlsx>thead>tr>th{
+	font-family: 'Kanit', sans-serif;
+}
+.back-btn{
+	background-color: transparent;
+	border:0px solid transparent;
+}
+th{
+	 font-family: 'Kanit', sans-serif;
+}
+td{
+	font-family: 'Kanit', sans-serif;
+}
+.box-sh{
+	box-shadow: 0px 0px 50px 0px #DDD;
+
+	
+}
+.sh-nav{
+	padding: 20px;
+	box-shadow: 0px 0px 20px 0px #DDD;
+	margin-bottom: 40px;
+	width: 100%;
+	position:relative;
+	top:-100px;
+	font-family: 'Kanit', sans-serif;
+	/*animation-name:popup;*/
+	
+
+}
