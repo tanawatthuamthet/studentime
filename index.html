@@ -109,7 +109,7 @@
   									<a style="color:#DDD;">เวลา </a><a id="show_time" style="color:#DDD;">0:0</a><br><br>
   									<center>
 
-    								<img src="https://raw.githubusercontent.com/tanawatthuamthet/studentime/gh-pages/none.png" id="show_img" width="150px" height="200px">
+    								<img src="https://raw.githubusercontent.com/tanawatthuamthet/studentime/gh-pages/none.PNG" id="show_img" width="150px" height="200px">
     								<hr>
 									<h3 id="show_name">ชื่อ นามสกุล</h3>
 									<p id="show_sub">เลข</p>
@@ -186,7 +186,7 @@
     					<form runat="server" width="300px" height="400px" style="overflow:hidden;">
   							<input accept="image/*" type='file' id="imgInp" style="position: absolute;z-index: 99;width: 100%;height: 600px;opacity: 0;" />
 
-  							<img id="blah" src="https://raw.githubusercontent.com/tanawatthuamthet/studentime/gh-pages/none1.png" alt="ภาพได้รับความเสียหาย" width="300px" height="400px"  />
+  							<img id="blah" src="https://raw.githubusercontent.com/tanawatthuamthet/studentime/gh-pages/none1.PNG" alt="ภาพได้รับความเสียหาย" width="300px" height="400px"  />
 						</form>
     				</div>
     				<div class="col-4">
@@ -312,7 +312,7 @@ function opentab(number){
 		}
 		if(number == 2){
 			$("#name-create").val("")
-			$("#blah").attr("src","https://raw.githubusercontent.com/tanawatthuamthet/studentime/gh-pages/none1.png")
+			$("#blah").attr("src","https://raw.githubusercontent.com/tanawatthuamthet/studentime/gh-pages/none1.PNG")
 	$("#lastname-create").val("")
 	$("#id-create").val("")
 	$("#number-create").val("")
@@ -358,7 +358,7 @@ var t=mountainsRef.put(file).then((snapshot) => {
   opentab(1)
   image_firebase = ""
   $("#imgInp").val("")
-  $("#blah").attr("src","https://raw.githubusercontent.com/tanawatthuamthet/studentime/gh-pages/none.png")
+  $("#blah").attr("src","https://raw.githubusercontent.com/tanawatthuamthet/studentime/gh-pages/none.PNG")
   
 }).catch(function(error) {
   // Handle any errors
@@ -395,7 +395,7 @@ $("#name-create").val("")
 function resetCheck(){
 	history_check = []
 	$("#memberFind").empty()
-	$("#show_img").attr("src","https://raw.githubusercontent.com/tanawatthuamthet/studentime/gh-pages/none.png")
+	$("#show_img").attr("src","https://raw.githubusercontent.com/tanawatthuamthet/studentime/gh-pages/none.PNG")
 	$("#show_name").text("ชื่อ นามสกุล")
 	$("#show_sub").text("เลข")
 }
